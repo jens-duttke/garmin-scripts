@@ -1,0 +1,37 @@
+{
+	"name": "garmin-scripts",
+	"version": "0.0.0",
+	"description": "A collection of scripts for building Garmin Connect IQ applications within the terminal.",
+	"keywords": [
+		"garmin",
+		"connect",
+		"iq",
+		"scripts",
+		"terminal",
+		"windows",
+		"build",
+		"simulator",
+		"era"
+	],
+	"author": "Jens Duttke <github@duttke.de> (https://github.com/jens-duttke)",
+	"license": "MIT",
+	"bin": {
+		"build": "./scripts/build.js",
+        "era": "./scripts/era.js",
+        "list-models-by-memory-usage": "./scripts/list-models-by-memory-usage.js",
+        "get-model-by-product-id": "./scripts/get-model-by-product-id.js"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jens-duttke/garmin-scripts.git"
+	},
+	"scripts": {
+		"publish:major": "npm version major",
+		"publish:minor": "npm version minor",
+		"publish:patch": "npm version patch",
+		"postversion": "git push && git push --tags && npm publish"
+	}
+}

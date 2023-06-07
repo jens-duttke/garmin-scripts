@@ -1,0 +1,8 @@
+.github/
+.vscode/
+
+.editorconfig
+.gitattributes
+.gitignore
+*.log
+npm-debug.log*
