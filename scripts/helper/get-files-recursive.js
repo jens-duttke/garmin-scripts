@@ -27,11 +27,11 @@ function getFilesRecursive (parentPath, filter) {
 		}
 		else if (filter.test(filePath)) {
 			result.push(filePath);
-		};
-	};
+		}
+	}
 
 	return result;
-};
+}
 
 module.exports = {
 	getFilesRecursive

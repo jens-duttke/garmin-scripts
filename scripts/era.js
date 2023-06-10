@@ -2,7 +2,7 @@
 
 /**
  * @file The CLI entry point to access the ERA tool (Error Reporting Application) to view your app's crashes after it has been released on the store.
- * 
+ *
  * @see https://developer.garmin.com/connect-iq/core-topics/exception-reporting-tool/
  */
 

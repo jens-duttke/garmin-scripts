@@ -7,13 +7,14 @@ const appDataPath = process.env.APPDATA || (process.platform === 'darwin' ? `${p
 
 const devicePath = path.join(appDataPath, 'Garmin/ConnectIQ/Devices');
 
-fs.readdir(devicePath, (error, files) => {
+fs.readdir(devicePath, (_error, files) => {
 	const dataFields = [];
+	/** @type {string[]} */
 	const memoryLimits = [];
 
 	for (const filePath of files) {
-		let displayName = undefined;
-		let memoryLimit = undefined;
+		let displayName;
+		let memoryLimit;
 
 		try {
 			const data = JSON.parse(fs.readFileSync(path.join(devicePath, filePath, 'compiler.json'), 'utf8'));
@@ -22,7 +23,9 @@ fs.readdir(devicePath, (error, files) => {
 			memoryLimit = data.appTypes.find(({ type }) => type === 'datafield').memoryLimit;
 		}
 		catch (error) {
-			memoryLimit = error.message;
+			if (error instanceof Error) {
+				memoryLimit = error.message;
+			}
 		}
 
 		dataFields.push({
@@ -36,7 +39,7 @@ fs.readdir(devicePath, (error, files) => {
 		}
 	}
 
-	memoryLimits.sort((a, b)=> b - a);
+	memoryLimits.sort((a, b) => b - a);
 
 	for (const memoryLimit of memoryLimits) {
 		console.log();

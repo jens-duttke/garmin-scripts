@@ -12,7 +12,7 @@ const { getCurrentSDKPath } = require('./get-current-sdk-path.js');
  * @returns {Promise<number>}
  */
 async function runCompiler (mode, device) {
-	return new Promise ((resolve) => {
+	return new Promise((resolve) => {
 		const child = childProcess.spawn('java', [
 			'-Xms1g',
 			'-Dfile.encoding=UTF-8',
@@ -38,7 +38,7 @@ async function runCompiler (mode, device) {
 		});
 
 		child.stderr.on('data', (data) => {
-			const lines = data.toString().split(/\r\n|\n|\r/);
+			const lines = data.toString().split(/\r\n|\n|\r/u);
 			const lastLine = lines.length - 1;
 
 			for (let i = 0; i <= lastLine; i++) {

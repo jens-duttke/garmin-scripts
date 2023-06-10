@@ -26,12 +26,12 @@ fs.readdir(devicePath, (error, files) => {
 				console.log(`Found Hardware Part Number for "${data.displayName}"`);
 			}
 
-			const partNumbersItem = data.partNumbers.find(({ number }) => number === productId)
+			const partNumbersItem = data.partNumbers.find(({ number }) => number === productId);
 
 			if (partNumbersItem) {
 				console.log(`Found Part Number for "${data.displayName}", Connect IQ Version ${partNumbersItem.connectIQVersion}, Firmware Version: ${partNumbersItem.firmwareVersion}`);
 			}
 		}
-		catch (error) { /* Do nothing */ }
+		catch { /* Do nothing */ }
 	}
 });

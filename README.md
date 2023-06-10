@@ -8,16 +8,16 @@ It's using the SDK version which is configured in the Connect IQ SDK Manager.
 
 ```json
 {
-	"scripts": {
-		"build:debug": "npx -p=garmin-scripts build --debug",
-		"build:beta": "npx -p=garmin-scripts build --beta",
-		"build:release": "npx -p=garmin-scripts build --release",
-		"build:simulator": "npx -p=garmin-scripts build --simulator fr645m",
-		"era:live": "npx -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef",
-		"era:beta": "npx -p=garmin-scripts era fedcba98-7654-3210-fedc-ba9876543210",
-		"list-models-by-memory-usage": "npx -p=garmin-scripts list-models-by-memory-usage",
-		"get-model-by-product-id": "npx -p=garmin-scripts get-model-by-product-id 006-B3990-00"
-	}
+  "scripts": {
+    "build:debug": "npx -p=garmin-scripts build --debug",
+    "build:beta": "npx -p=garmin-scripts build --beta",
+    "build:release": "npx -p=garmin-scripts build --release",
+    "build:simulator": "npx -p=garmin-scripts build --simulator fr645m",
+    "era:live": "npx -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef",
+    "era:beta": "npx -p=garmin-scripts era fedcba98-7654-3210-fedc-ba9876543210",
+    "list-models-by-memory-usage": "npx -p=garmin-scripts list-models-by-memory-usage",
+    "get-model-by-product-id": "npx -p=garmin-scripts get-model-by-product-id 006-B3990-00"
+  }
 }
 ```
 
@@ -35,7 +35,7 @@ Create a JSON file named `.store` in the root of your project.
 
 This file can have 3 properties: "release", "beta" and "debug". Each of them represents the application ID which is injected into your `manifest.xml`, if you build of of these versions.
 
-```
+```json
 {
     "release": "01234567-89ab-cdef-0123-456789abcdef",
     "beta": "01234567-89ab-cdef-0123-456789abcdef",
@@ -68,13 +68,14 @@ After the build is finished, the ID is unset.
 It's important to have atleast `id=""` in the `iq:application` tag of your `manifest.xml`, as this is the place where the ID is injected.
 
 For example:
+
 ```xml
 <iq:application id="" type="datafield" name="@Strings.AppName" entry="App" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.0.0">
 ```
 
 ⚠️ Remember not to change or commit this file while the build is running, otherwise the automatic reverting of the ID after the build has been finished could lead to unexpected results.
 
-#### Setting of application name 
+#### Setting of application name
 
 While compiling using `--debug` and `--beta`, the script will crawl through all XML files and searches for such a tag:
 

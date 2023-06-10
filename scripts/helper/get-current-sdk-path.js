@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const APP_DATA = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share");
+const APP_DATA = process.env.APPDATA || (process.platform === 'darwin' ? `${process.env.HOME}/Library/Preferences` : `${process.env.HOME}/.local/share`);
 const SDK_DATE_REGEXP = /(\d\d\d\d)-(\d\d)-(\d\d)-.+$/u;
 
 /**
@@ -30,27 +30,28 @@ function getCurrentSDKPath () {
 		return connectIQSdksDirectories[0];
 	}
 	else {
-		const getOrderedDirectories = connectIQSdksDirectories.map((name) => {
+		/** @type {[number, string][]} */
+		const orderedDirectories = connectIQSdksDirectories.map((name) => {
 			const match = SDK_DATE_REGEXP.exec(name);
 
 			if (match === null) {
 				return null;
 			}
 
-			const version = Number.parseInt(`${match[1]}${match[2]}${match[3]}`);
+			const version = Number.parseInt(`${match[1]}${match[2]}${match[3]}`, 10);
 
 			if (!Number.isFinite(version)) {
 				return null;
 			}
 
-			return [version, name]
-		}).filter((item) => item !== null).sort((a,b ) => b[0] - a[0]);
+			return [version, name];
+		}).filter((item) => item !== null).sort((a, b) => b[0] - a[0]);
 
-		if (connectIQSdksDirectories.length === 0) {
-			throw new Error(`No Connect IQ SDK folder found in ${connectIQSdkParentPath}`);
+		if (orderedDirectories.length === 0) {
+			throw new Error(`No Connect IQ SDK folder found in ${connectIQPath}`);
 		}
 
-		return connectIQSdksDirectories[0];
+		return orderedDirectories[0][1];
 	}
 }
 
@@ -65,7 +66,7 @@ function getSubDirectories (parentPath) {
 	const result = [];
 
 	if (!fs.existsSync(parentPath)) {
-		return;
+		return [];
 	}
 
 	const files = fs.readdirSync(parentPath);
@@ -75,11 +76,11 @@ function getSubDirectories (parentPath) {
 
 		if (fs.lstatSync(filePath).isDirectory()) {
 			result.push(filePath);
-		};
-	};
+		}
+	}
 
 	return result;
-};
+}
 
 module.exports = {
 	getCurrentSDKPath

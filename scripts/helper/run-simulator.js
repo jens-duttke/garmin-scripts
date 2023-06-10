@@ -11,8 +11,8 @@ const { getCurrentSDKPath } = require('./get-current-sdk-path.js');
  * @returns {Promise<number>}
  */
 async function runSimulator (device) {
-	let exitCode = await new Promise ((resolve) => {
-		const child = childProcess.spawn('"' + path.join(getCurrentSDKPath(), 'bin/connectiq') + '"', {
+	const exitCode = await new Promise((resolve) => {
+		const child = childProcess.spawn(`"${path.join(getCurrentSDKPath(), 'bin/connectiq')}"`, {
 			shell: true
 		});
 
@@ -21,7 +21,7 @@ async function runSimulator (device) {
 		});
 
 		child.stderr.on('data', (data) => {
-			const lines = data.toString().split(/\r\n|\n|\r/);
+			const lines = data.toString().split(/\r\n|\n|\r/u);
 			const lastLine = lines.length - 1;
 
 			for (let i = 0; i <= lastLine; i++) {
@@ -51,8 +51,8 @@ async function runSimulator (device) {
 		return exitCode;
 	}
 
-	return new Promise ((resolve) => {
-		const child = childProcess.spawn('"' + path.join(getCurrentSDKPath(), 'bin/monkeydo') + '"', [
+	return new Promise((resolve) => {
+		const child = childProcess.spawn(`"${path.join(getCurrentSDKPath(), 'bin/monkeydo')}"`, [
 			path.join(process.cwd(), 'build', path.basename(path.resolve(process.cwd())) + '.prg'),
 			device
 		], {
@@ -64,7 +64,7 @@ async function runSimulator (device) {
 		});
 
 		child.stderr.on('data', (data) => {
-			const lines = data.toString().split(/\r\n|\n|\r/);
+			const lines = data.toString().split(/\r\n|\n|\r/u);
 			const lastLine = lines.length - 1;
 
 			for (let i = 0; i <= lastLine; i++) {
@@ -86,7 +86,7 @@ async function runSimulator (device) {
 		});
 
 		child.on('exit', (code) => {
-			resolve(code);
+			resolve(code ?? 0);
 		});
 	});
 }

@@ -12,12 +12,12 @@ if (process.platform === 'win32') {
 		output: process.stdout
 	});
 
-	readline.on('SIGINT', function () {
+	readline.on('SIGINT', () => {
 		process.emit('SIGINT');
 	});
 }
 
-(async () => {
+void (async () => {
 	if (!['--debug', '--simulator', '--beta', '--release'].includes(process.argv[2])) {
 		console.log('Please specify either --debug, --simulator, --beta or --release');
 
@@ -27,6 +27,7 @@ if (process.platform === 'win32') {
 	const arg2 = process.argv[2].substr(2);
 	let device = process.argv[3];
 	const isSimulator = (arg2 === 'simulator');
+	/** @type {'debug' | 'release' | 'beta'} */
 	const mode = (isSimulator ? 'debug' : arg2);
 
 	if (['debug', 'simulator'].includes(mode)) {
@@ -36,7 +37,7 @@ if (process.platform === 'win32') {
 	}
 	else {
 		if (device) {
-			console.log(`Device "${device}" can only be specified in --debug or --simulator`)
+			console.log(`Device "${device}" can only be specified in --debug or --simulator`);
 
 			process.exit(1);
 		}
@@ -44,10 +45,10 @@ if (process.platform === 'win32') {
 
 	const unsetApplicationId = setApplicationId(mode);
 	const revertApplicationName = (mode === 'release' ? () => undefined : setApplicationName(mode));
-	const revertRenaming = renameCodeFiles();
+	const revertRenaming = renameCodeFiles(mode === 'debug');
 
 	// Revert changes on Ctrl+C
-	process.on('SIGINT', function () {
+	process.on('SIGINT', () => {
 		revertRenaming();
 		revertApplicationName();
 		unsetApplicationId();
@@ -66,10 +67,10 @@ if (process.platform === 'win32') {
 	}
 
 	if (code === 0) {
-		process.stdout.write(`\n\u001B[32mEverything is fine!\u001B[39m\n\n`);
+		process.stdout.write('\n\u001B[32mEverything is fine!\u001B[39m\n\n');
 	}
 	else {
-		process.stdout.write(`\n\u001B[31mERROR!!!\u001B[39m\n\n`);
+		process.stdout.write('\n\u001B[31mERROR!!!\u001B[39m\n\n');
 	}
 
 	process.exit(code);

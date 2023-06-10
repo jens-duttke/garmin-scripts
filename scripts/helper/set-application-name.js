@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 const { getFilesRecursive } = require('./get-files-recursive.js');
 
@@ -10,10 +9,11 @@ const appNameRegExp = /(?<=<string id="AppName">)(.+?)(?=<\/string>)/u;
  *
  * @public
  * @param {'debug' | 'beta' | 'release'} mode
- * @returns {() => void)} Function to reset the AppName string to their original string
+ * @returns {() => void} Function to reset the AppName string to their original string
  */
 function setApplicationName (mode) {
 	const files = getFilesRecursive(process.cwd(), /\.xml$/u);
+	/** @type {[filePath: string, content: string][]} */
 	const replacedFiles = [];
 
 	for (const filePath of files) {

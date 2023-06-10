@@ -27,7 +27,7 @@ function setApplicationId (mode) {
 
 	return () => {
 		fs.writeFileSync(filePath, content.replace(applicationIdRegExp, ''));
-	}
+	};
 }
 
 module.exports = {
