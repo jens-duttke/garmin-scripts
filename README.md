@@ -9,14 +9,14 @@ It's using the SDK version which is configured in the Connect IQ SDK Manager.
 ```json
 {
   "scripts": {
-    "build:debug": "npx -p=garmin-scripts build --debug",
-    "build:beta": "npx -p=garmin-scripts build --beta",
-    "build:release": "npx -p=garmin-scripts build --release",
-    "build:simulator": "npx -p=garmin-scripts build --simulator fr645m",
-    "era:live": "npx -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef",
-    "era:beta": "npx -p=garmin-scripts era fedcba98-7654-3210-fedc-ba9876543210",
-    "list-models-by-memory-usage": "npx -p=garmin-scripts list-models-by-memory-usage",
-    "get-model-by-product-id": "npx -p=garmin-scripts get-model-by-product-id 006-B3990-00"
+    "build:debug": "npx -y -p=garmin-scripts build --debug",
+    "build:beta": "npx -y -p=garmin-scripts build --beta",
+    "build:release": "npx -y -p=garmin-scripts build --release",
+    "build:simulator": "npx -y -p=garmin-scripts build --simulator fr645m",
+    "era:live": "npx -y -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef",
+    "era:beta": "npx -y -p=garmin-scripts era fedcba98-7654-3210-fedc-ba9876543210",
+    "list-models-by-memory-usage": "npx -y -p=garmin-scripts list-models-by-memory-usage",
+    "get-model-by-product-id": "npx -y -p=garmin-scripts get-model-by-product-id 006-B3990-00"
   }
 }
 ```
@@ -50,10 +50,10 @@ If the application ID for a specific version is missing `"00000000-0000-0000-000
 ### Build / Run simulator
 
 ```bash
-npx -p=garmin-scripts build --debug
-npx -p=garmin-scripts build --beta
-npx -p=garmin-scripts build --release
-npx -p=garmin-scripts build --simulator fr645m
+npx -y -p=garmin-scripts build --debug
+npx -y -p=garmin-scripts build --beta
+npx -y -p=garmin-scripts build --release
+npx -y -p=garmin-scripts build --simulator fr645m
 ```
 
 #### Specify devices for `--debug` and `--simulator`
@@ -100,13 +100,13 @@ This can be helpful to create 2 versions of a module, one with logging of debug 
 ### Error Reporting Application
 
 ```bash
-npx -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef
+npx -y -p=garmin-scripts era 01234567-89ab-cdef-0123-456789abcdef
 ```
 
 ### List installed models by their memory usage
 
 ```bash
-npx -p=garmin-scripts list-models-by-memory-usage
+npx -y -p=garmin-scripts list-models-by-memory-usage
 ```
 
 ⚠️ Only devices which are installed by the Connect IQ SDK Manager are covered.
@@ -116,7 +116,7 @@ npx -p=garmin-scripts list-models-by-memory-usage
 Error reports may only contain a Product ID. To get it's name, you can use this script.
 
 ```bash
-npx -p=garmin-scripts get-model-by-product-id 006-B3990-00
+npx -y -p=garmin-scripts get-model-by-product-id 006-B3990-00
 ```
 
 ⚠️ Only devices which are installed by the Connect IQ SDK Manager are covered.
