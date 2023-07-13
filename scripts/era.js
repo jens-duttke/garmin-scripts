@@ -10,6 +10,7 @@ const childProcess = require('node:child_process');
 const path = require('path');
 
 const { getCurrentSDKPath } = require('./helper/get-current-sdk-path.js');
+const { getExitCodeBySignal } = require('./helper/get-exit-code-by-signal.js');
 
 const appId = process.argv[2];
 
@@ -32,6 +33,6 @@ child.stderr.on('data', (data) => {
 	process.stdout.write(`\u001B[31m${data.toString()}\u001B[39m`);
 });
 
-child.on('exit', (code) => {
-	process.exit(code);
+child.on('exit', (code, signal) => {
+	process.exit(code ?? getExitCodeBySignal(signal));
 });

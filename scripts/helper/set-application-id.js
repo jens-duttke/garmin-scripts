@@ -4,18 +4,20 @@ const path = require('path');
 const applicationIdRegExp = /(?<=iq:application\s.*(?<=\s)id=")(.*?)(?=".*>)/u;
 
 /**
- * Set the application ID in the manifest.xml
+ * Set the application ID in the manifest.xml.
  *
  * @public
  * @param {'debug' | 'beta' | 'release'} mode
- * @returns {() => void)} Function to unset the application id after the compiling is finished
+ * @returns {() => void} Function to unset the application id after the compiling is finished
+ *
+ * @throws {Error} If no "id" attribute is found in the manifest.xml
  */
 function setApplicationId (mode) {
-	const store = JSON.parse(fs.readFileSync(path.join(process.cwd(), '.store')));
+	const store = JSON.parse(fs.readFileSync(path.join(process.cwd(), '.store'), 'utf8'));
 
 	const filePath = path.join(process.cwd(), 'manifest.xml');
 
-	const content = fs.readFileSync(filePath, { encoding: 'utf8' });
+	const content = fs.readFileSync(filePath, 'utf8');
 
 	if (!applicationIdRegExp.test(content)) {
 		throw new Error('"id" not found in manifest.xml');

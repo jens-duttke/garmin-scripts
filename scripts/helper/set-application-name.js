@@ -17,7 +17,7 @@ function setApplicationName (mode) {
 	const replacedFiles = [];
 
 	for (const filePath of files) {
-		const content = fs.readFileSync(filePath, { encoding: 'utf8' });
+		const content = fs.readFileSync(filePath, 'utf8');
 
 		const match = appNameRegExp.exec(content);
 		if (match !== null) {

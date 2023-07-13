@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
+const { promises: fs } = require('fs');
 const path = require('path');
+
+const { getAppDataPath } = require('./helper/get-app-data-path.js');
 
 const productId = process.argv.slice(-1)[0];
 
-const appDataPath = process.env.APPDATA || (process.platform === 'darwin' ? `${process.env.HOME}/Library/Preferences` : `${process.env.HOME}/.local/share`);
+const devicePath = path.join(getAppDataPath(), 'Garmin/ConnectIQ/Devices');
 
-const devicePath = path.join(appDataPath, 'Garmin/ConnectIQ/Devices');
+void (async () => {
+	const files = await fs.readdir(devicePath);
 
-fs.readdir(devicePath, (error, files) => {
-	for (const filePath of files) {
+	await Promise.all(files.map(async (filePath) => {
 		try {
-			const data = JSON.parse(fs.readFileSync(path.join(devicePath, filePath, 'compiler.json'), 'utf8'));
+			/** @type {{ displayName: string; hardwarePartNumber: string; worldWidePartNumber: string; partNumbers: { number: string; firmwareVersion: string; connectIQVersion: string; }[]; }} */
+			const data = JSON.parse(await fs.readFile(path.join(devicePath, filePath, 'compiler.json'), 'utf8'));
 
 			if (productId === data.hardwarePartNumber) {
 				console.log(`Found Hardware Part Number for "${data.displayName}"`);
@@ -33,5 +36,5 @@ fs.readdir(devicePath, (error, files) => {
 			}
 		}
 		catch { /* Do nothing */ }
-	}
-});
+	}));
+})();

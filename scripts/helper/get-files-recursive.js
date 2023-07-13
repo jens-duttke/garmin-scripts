@@ -14,7 +14,7 @@ function getFilesRecursive (parentPath, filter) {
 	const result = [];
 
 	if (!fs.existsSync(parentPath)) {
-		return;
+		return [];
 	}
 
 	const files = fs.readdirSync(parentPath);

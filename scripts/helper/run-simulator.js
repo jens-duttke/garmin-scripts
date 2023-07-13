@@ -2,9 +2,10 @@ const childProcess = require('node:child_process');
 const path = require('path');
 
 const { getCurrentSDKPath } = require('./get-current-sdk-path.js');
+const { getExitCodeBySignal } = require('./get-exit-code-by-signal.js');
 
 /**
- * Run the simulator
+ * Run the simulator.
  *
  * @public
  * @param {string} device
@@ -42,8 +43,8 @@ async function runSimulator (device) {
 			}
 		});
 
-		child.on('exit', (code) => {
-			resolve(code);
+		child.on('exit', (code, signal) => {
+			resolve(code ?? getExitCodeBySignal(signal));
 		});
 	});
 
@@ -53,7 +54,7 @@ async function runSimulator (device) {
 
 	return new Promise((resolve) => {
 		const child = childProcess.spawn(`"${path.join(getCurrentSDKPath(), 'bin/monkeydo')}"`, [
-			path.join(process.cwd(), 'build', path.basename(path.resolve(process.cwd())) + '.prg'),
+			path.join(process.cwd(), 'build', `${path.basename(path.resolve(process.cwd()))}.prg`),
 			device
 		], {
 			shell: true
@@ -85,8 +86,8 @@ async function runSimulator (device) {
 			}
 		});
 
-		child.on('exit', (code) => {
-			resolve(code ?? 0);
+		child.on('exit', (code, signal) => {
+			resolve(code ?? getExitCodeBySignal(signal));
 		});
 	});
 }

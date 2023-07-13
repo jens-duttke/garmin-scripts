@@ -18,39 +18,16 @@ if (process.platform === 'win32') {
 }
 
 void (async () => {
-	if (!['--debug', '--simulator', '--beta', '--release'].includes(process.argv[2])) {
-		console.log('Please specify either --debug, --simulator, --beta or --release');
-
-		process.exit(1);
-	}
-
-	const arg2 = process.argv[2].substr(2);
-	let device = process.argv[3];
-	const isSimulator = (arg2 === 'simulator');
-	/** @type {'debug' | 'release' | 'beta'} */
-	const mode = (isSimulator ? 'debug' : arg2);
-
-	if (['debug', 'simulator'].includes(mode)) {
-		if (!device) {
-			device = 'fenix7';
-		}
-	}
-	else {
-		if (device) {
-			console.log(`Device "${device}" can only be specified in --debug or --simulator`);
-
-			process.exit(1);
-		}
-	}
+	const { device, isSimulator, mode } = parseProcessArguments();
 
 	const unsetApplicationId = setApplicationId(mode);
-	const revertApplicationName = (mode === 'release' ? () => undefined : setApplicationName(mode));
+	const revertApplicationName = (mode === 'release' ? undefined : setApplicationName(mode));
 	const revertRenaming = renameCodeFiles(mode === 'debug');
 
 	// Revert changes on Ctrl+C
 	process.on('SIGINT', () => {
 		revertRenaming();
-		revertApplicationName();
+		revertApplicationName?.();
 		unsetApplicationId();
 
 		process.exit();
@@ -59,7 +36,7 @@ void (async () => {
 	let code = await runCompiler(mode, device);
 
 	revertRenaming();
-	revertApplicationName();
+	revertApplicationName?.();
 	unsetApplicationId();
 
 	if (code === 0 && isSimulator) {
@@ -75,3 +52,38 @@ void (async () => {
 
 	process.exit(code);
 })();
+
+/**
+ * Read process arguments.
+ *
+ * @returns {{ device: string; isSimulator: boolean; mode: 'debug' | 'release' | 'beta' }}
+ */
+function parseProcessArguments () {
+	if (!['--debug', '--simulator', '--beta', '--release'].includes(process.argv[2])) {
+		console.log('Please specify either --debug, --simulator, --beta or --release');
+
+		process.exit(1);
+	}
+
+	let device = process.argv[3];
+	const processArgument2 = process.argv[2].substr(2);
+	const isSimulator = (processArgument2 === 'simulator');
+
+	/** @type {'debug' | 'release' | 'beta'} */
+	const mode = (isSimulator ? 'debug' : /** @type {'debug' | 'release' | 'beta'} */(processArgument2));
+
+	if (mode === 'debug') {
+		if (!device) {
+			device = 'fenix7';
+		}
+	}
+	else {
+		if (device) {
+			console.log(`Device "${device}" can only be specified in --debug or --simulator`);
+
+			process.exit(1);
+		}
+	}
+
+	return { device, isSimulator, mode };
+}

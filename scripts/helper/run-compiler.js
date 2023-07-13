@@ -2,9 +2,10 @@ const childProcess = require('node:child_process');
 const path = require('path');
 
 const { getCurrentSDKPath } = require('./get-current-sdk-path.js');
+const { getExitCodeBySignal } = require('./get-exit-code-by-signal.js');
 
 /**
- * Run the Monkey C compiler
+ * Run the Monkey C compiler.
  *
  * @public
  * @param {'debug' | 'beta' | 'release'} mode
@@ -59,8 +60,8 @@ async function runCompiler (mode, device) {
 			}
 		});
 
-		child.on('exit', (code) => {
-			resolve(code);
+		child.on('exit', (code, signal) => {
+			resolve(code ?? getExitCodeBySignal(signal));
 		});
 	});
 }

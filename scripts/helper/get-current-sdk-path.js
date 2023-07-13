@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const APP_DATA = process.env.APPDATA || (process.platform === 'darwin' ? `${process.env.HOME}/Library/Preferences` : `${process.env.HOME}/.local/share`);
+const { getAppDataPath } = require('./get-app-data-path.js');
+
 const SDK_DATE_REGEXP = /(\d\d\d\d)-(\d\d)-(\d\d)-.+$/u;
 
 /**
@@ -9,10 +10,11 @@ const SDK_DATE_REGEXP = /(\d\d\d\d)-(\d\d)-(\d\d)-.+$/u;
  *
  * @public
  * @returns {string}
+ *
  * @throws {Error} If no Connect IQ SDK folder has been found.
  */
 function getCurrentSDKPath () {
-	const connectIQPath = path.join(APP_DATA, 'Garmin/ConnectIQ');
+	const connectIQPath = path.join(getAppDataPath(), 'Garmin/ConnectIQ');
 	const sdkConfigFile = path.join(connectIQPath, 'current-sdk.cfg');
 
 	const sdkPath = fs.existsSync(sdkConfigFile) && fs.lstatSync(sdkConfigFile).isFile() && fs.readFileSync(sdkConfigFile, 'utf8').trim();
@@ -44,8 +46,17 @@ function getCurrentSDKPath () {
 				return null;
 			}
 
+			/** @type {[number, string]} */
 			return [version, name];
-		}).filter((item) => item !== null).sort((a, b) => b[0] - a[0]);
+		}).filter(
+			/**
+			 * Removes `null` values.
+			 *
+			 * @param {((number | string)[] | null)} item - The item to check.
+			 * @returns {item is [number, string]} - True if the item is of type [number, string], false otherwise.
+			 */
+			(item) => item !== null
+		).sort((a, b) => b[0] - a[0]);
 
 		if (orderedDirectories.length === 0) {
 			throw new Error(`No Connect IQ SDK folder found in ${connectIQPath}`);

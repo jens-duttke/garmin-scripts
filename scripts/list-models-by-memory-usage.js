@@ -1,45 +1,54 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
+const { promises: fs } = require('fs');
 const path = require('path');
 
-const appDataPath = process.env.APPDATA || (process.platform === 'darwin' ? `${process.env.HOME}/Library/Preferences` : `${process.env.HOME}/.local/share`);
+const { getAppDataPath } = require('./helper/get-app-data-path.js');
 
-const devicePath = path.join(appDataPath, 'Garmin/ConnectIQ/Devices');
+const devicePath = path.join(getAppDataPath(), 'Garmin/ConnectIQ/Devices');
 
-fs.readdir(devicePath, (_error, files) => {
-	const dataFields = [];
-	/** @type {string[]} */
-	const memoryLimits = [];
+void (async () => {
+	const files = await fs.readdir(devicePath);
 
-	for (const filePath of files) {
+	const dataFields = await Promise.all(files.map(async (filePath) => {
+		/** @type {string | undefined} */
 		let displayName;
+		/** @type {string} */
 		let memoryLimit;
 
 		try {
-			const data = JSON.parse(fs.readFileSync(path.join(devicePath, filePath, 'compiler.json'), 'utf8'));
+			/** @type {{ displayName: string; appTypes: { type: string; memoryLimit: number; }[]; }} */
+			const data = JSON.parse(await fs.readFile(path.join(devicePath, filePath, 'compiler.json'), 'utf8'));
 
 			displayName = data.displayName;
-			memoryLimit = data.appTypes.find(({ type }) => type === 'datafield').memoryLimit;
+			memoryLimit = data.appTypes.find(({ type }) => type === 'datafield')?.memoryLimit.toString() ?? 'Type "datafield" not found.';
 		}
 		catch (error) {
 			if (error instanceof Error) {
 				memoryLimit = error.message;
 			}
+			else {
+				memoryLimit = 'Unknown error';
+			}
 		}
 
-		dataFields.push({
+		return {
 			filePath,
 			displayName,
 			memoryLimit
-		});
+		};
+	}));
 
+	/** @type {string[]} */
+	const memoryLimits = [];
+
+	for (const { memoryLimit } of dataFields) {
 		if (!memoryLimits.includes(memoryLimit)) {
 			memoryLimits.push(memoryLimit);
 		}
 	}
 
-	memoryLimits.sort((a, b) => b - a);
+	memoryLimits.sort((a, b) => b.toString().localeCompare(a.toString(), undefined, { numeric: true }));
 
 	for (const memoryLimit of memoryLimits) {
 		console.log();
@@ -51,4 +60,4 @@ fs.readdir(devicePath, (_error, files) => {
 			}
 		}
 	}
-});
+})();
