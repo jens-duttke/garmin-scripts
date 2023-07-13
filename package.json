@@ -29,9 +29,20 @@
 		"url": "https://github.com/jens-duttke/garmin-scripts.git"
 	},
 	"scripts": {
+		"check-outdated": "npx --yes -- check-outdated --ignore-pre-releases",
+		"lint": "lint tsc --tsconfig=jsconfig.json ts md audit",
 		"publish:major": "npm version major",
 		"publish:minor": "npm version minor",
 		"publish:patch": "npm version patch",
+		"preversion": "npm run lint && npm run check-outdated",
 		"postversion": "git push && git push --tags && npm publish"
+	},
+	"devDependencies": {
+		"@types/node": "18.7.19",
+		"linter-bundle": "3.3.0"
+	},
+	"overrides": {
+		"@typescript-eslint/utils": "6.0.0",
+		"stylelint": "15.10.1"
 	}
 }

@@ -2,7 +2,9 @@
 .vscode/
 
 .editorconfig
+.eslintrc.js
 .gitattributes
 .gitignore
 *.log
+jsconfig.json
 npm-debug.log*
