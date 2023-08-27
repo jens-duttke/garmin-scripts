@@ -9,7 +9,6 @@ const applicationIdRegExp = /(?<=iq:application\s.*(?<=\s)id=")(.*?)(?=".*>)/u;
  * @public
  * @param {'debug' | 'beta' | 'release'} mode
  * @returns {() => void} Function to unset the application id after the compiling is finished
- *
  * @throws {Error} If no "id" attribute is found in the manifest.xml
  */
 function setApplicationId (mode) {
