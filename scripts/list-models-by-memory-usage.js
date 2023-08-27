@@ -10,7 +10,7 @@ const devicePath = path.join(getAppDataPath(), 'Garmin/ConnectIQ/Devices');
 void (async () => {
 	const files = await fs.readdir(devicePath);
 
-	const dataFields = await Promise.all(files.map(async (filePath) => {
+	const devices = await Promise.all(files.map(async (filePath) => {
 		/** @type {string | undefined} */
 		let displayName;
 		/** @type {string} */
@@ -42,7 +42,7 @@ void (async () => {
 	/** @type {string[]} */
 	const memoryLimits = [];
 
-	for (const { memoryLimit } of dataFields) {
+	for (const { memoryLimit } of devices) {
 		if (!memoryLimits.includes(memoryLimit)) {
 			memoryLimits.push(memoryLimit);
 		}
@@ -54,9 +54,9 @@ void (async () => {
 		console.log();
 		console.log(`${memoryLimit}:`);
 
-		for (const dataField of dataFields) {
-			if (dataField.memoryLimit === memoryLimit) {
-				console.log(`- ${dataField.displayName} (${dataField.filePath})`);
+		for (const device of devices) {
+			if (device.memoryLimit === memoryLimit) {
+				console.log(`- ${device.displayName} (${device.filePath})`);
 			}
 		}
 	}
