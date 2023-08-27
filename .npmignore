@@ -5,6 +5,9 @@
 .eslintrc.js
 .gitattributes
 .gitignore
-*.log
+.markdownlint.json
+CHANGELOG.md
 jsconfig.json
+
 npm-debug.log*
+*.log
