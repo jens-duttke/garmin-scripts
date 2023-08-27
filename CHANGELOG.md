@@ -6,7 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
-[Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.2.0...HEAD)
+[Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.2.1...HEAD)
+
+## [1.2.1] - 2023-08-27
+
+### Added
+
+- Fixed typo
+
+[Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.2.0...v1.2.1)
 
 ## [1.2.0] - 2023-08-27
 
