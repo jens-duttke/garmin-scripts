@@ -20,6 +20,7 @@
 		"era": "./scripts/era.js",
 		"list-models-by-memory-usage": "./scripts/list-models-by-memory-usage.js",
 		"list-models-by-bits-per-pixel": "./scripts/list-models-by-bits-per-pixel.js",
+		"list-unused-models": "./scripts/list-unused-models.js",
 		"get-model-by-product-id": "./scripts/get-model-by-product-id.js"
 	},
 	"engines": {
@@ -40,10 +41,10 @@
 	},
 	"devDependencies": {
 		"@types/node": "18.7.19",
-		"linter-bundle": "3.7.0"
+		"linter-bundle": "5.1.0"
 	},
 	"overrides": {
-		"@typescript-eslint/utils": "6.3.0",
-		"stylelint": "15.10.2"
+		"@typescript-eslint/utils": "6.5.0",
+		"stylelint": "15.10.3"
 	}
 }
