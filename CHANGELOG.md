@@ -8,9 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.2.1...HEAD)
 
-## [1.2.1] - 2023-08-27
+## [1.3.0] - 2023-11-24
 
 ### Added
+
+- Added `list-unused-models` script, to list devices which are not mentioned in the manifest.xml
+
+[Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.1.0...v1.2.0)
+
+## [1.2.1] - 2023-08-27
+
+### Fixed
 
 - Fixed typo
 

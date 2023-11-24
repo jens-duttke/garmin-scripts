@@ -17,6 +17,7 @@ It's using the SDK version which is configured in the Connect IQ SDK Manager.
     "era:beta": "npx -y -p=garmin-scripts era fedcba98-7654-3210-fedc-ba9876543210",
     "list-models-by-memory-usage": "npx -y -p=garmin-scripts list-models-by-memory-usage",
     "list-models-by-bits-per-pixel": "npx -y -p=garmin-scripts list-models-by-bits-per-pixel",
+    "list-unused-models": "npx -y -p=garmin-scripts list-unused-models",
     "get-model-by-product-id": "npx -y -p=garmin-scripts get-model-by-product-id 006-B3990-00"
   }
 }
@@ -116,6 +117,14 @@ npx -y -p=garmin-scripts list-models-by-memory-usage
 
 ```bash
 npx -y -p=garmin-scripts list-models-by-bits-per-pixel
+```
+
+⚠️ Only devices which are installed by the Connect IQ SDK Manager are covered.
+
+### List installed models which are not mentioned in the `manifest.xml`
+
+```bash
+npx -y -p=garmin-scripts list-unused-models
 ```
 
 ⚠️ Only devices which are installed by the Connect IQ SDK Manager are covered.
