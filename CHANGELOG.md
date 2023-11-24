@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 [Show all code changes](https://github.com/jens-duttke/garmin-scripts/compare/v1.2.1...HEAD)
 
-## [1.3.0] - 2023-11-24
+## [1.4.0] - 2023-11-24
 
 ### Added
 
